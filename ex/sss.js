@@ -1,21 +1,19 @@
+let crabX;
+let crabY;
 
-function setup()
-{
+function setup() {
     createCanvas(800, 600);
     background(16, 100, 250);
+    crabX = width / 2; // Начальная позиция по оси X
+    crabY = height / 2; // Начальная позиция по оси Y
 }
-function update()//обновляет поле
-{
-    MainDraw();
-    background(16, 100, 250);
-    requestAnimationFrame(update)
-}
-update();
+
+
 
 function draw()//, landscape
 {
-
-
+    background(16, 100, 250); // Обновляем фон при каждой перерисовке
+    drawCrabStand(crabX, crabY); // Рисуем краба на текущих координатах
     fill(255, 255, 255);
     triangle(520, 200, 430, 400, 600, 400);
     fill(75, 83, 32);
@@ -265,4 +263,17 @@ function drawCrabJumpRight(x, y) {
     line(x - 12, y + 10, x - 20, y + 30); // Левая нога
     line(x +10, y + 10, x , y + 30); // Правая нога
     noStroke(); 
+}
+
+function keyPressed() {
+    if (key === 'W' || key === 'w') {
+        crabY -= 5; // Двигаем краба вверх
+    } else if (key === 'S' || key === 's') {
+        crabY += 5; // Двигаем краба вниз
+    } else if (key === 'A' || key === 'a') {
+        crabX -= 5; // Двигаем краба влево
+    } else if (key === 'D' || key === 'd') {
+        crabX += 5; // Двигаем краба вправо
+    }
+}
 }
