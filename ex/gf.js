@@ -1,4 +1,4 @@
-alert("Управление: AD, Space, ctrl")
+alert("Control buttons: AD, Space, ctrl")
 let crabX;
 let crabY;
 let isJumping = false;//состояние
