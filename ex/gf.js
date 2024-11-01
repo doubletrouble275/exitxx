@@ -1,4 +1,4 @@
-alert("Управление: AD, Space")
+alert("control buttons: AD, Space")
 let mouseXPos; 
 let mouseYPos; 
 let mouseSpeedX; 
