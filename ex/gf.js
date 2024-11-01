@@ -1,4 +1,10 @@
-alert("Control buttons: AD, Space, ctrl")
+alert("Управление: AD, Space")
+let mouseXPos; 
+let mouseYPos; 
+let mouseSpeedX; 
+let mouseSpeedY; 
+let isMouseMoving = false; 
+let showMouse = false; 
 let crabX;
 let crabY;
 let isJumping = false;//состояние
@@ -10,7 +16,7 @@ function setup() {
     background(16, 100, 250);
     crabX = 400; // Начальная позиция по оси X
     crabY = 500; // Начальная позиция по оси Y
-
+    inMousePosition();
 }
 
 function draw() {
@@ -54,8 +60,26 @@ function draw() {
     drawTree(500, 500);
     drawTree(670, 480);
     drawTree(330, 480);
- 
+    drawSign();
+    if (isMouseMoving) {
+        mouseXPos += mouseSpeedX;
+        mouseYPos += mouseSpeedY;
+
+        //мышь не выходит за границы
+        if (mouseXPos > width || mouseXPos < 0) {
+            mouseSpeedX *= -1;
+        }
+        if (mouseYPos > height || mouseYPos < 0) {
+            mouseSpeedY *= -1;
+        }
+    }
+
+    // мышь
+    if (showMouse) {
+        drawMouse(mouseXPos, mouseYPos);
+    }
     moveCrab(); // перемещение краба
+    
     if (isJumping) {
         jumpCrab(); // Обработка прыжка
         }
@@ -344,3 +368,86 @@ function drawCrabSit(x, y) {
     noStroke();
 }
 }//Functions drawCrab
+function inMousePosition() {
+    //случайная позиция и скорость
+    mouseXPos = random(width);
+    mouseYPos = random(height);
+    mouseSpeedX = random(2, 7);
+    mouseSpeedY = random(2, 7);
+}
+
+function mousePressed() {
+    showMouse = !showMouse;
+    if (showMouse) {
+        isMouseMoving = true;
+        inMousePosition();  //движение c random pos
+    } else {
+        isMouseMoving = false; 
+    }
+}
+function drawMouse(x, y) {
+    // Тело мыши
+    fill(150, 75, 0);
+    ellipse(x, y, 50, 30);
+
+    // Голова мыши
+    ellipse(x + 20, y, 30, 20);
+    
+    // Уши
+    fill(200, 100, 0);
+    ellipse(x + 30, y - 5, 15, 15);
+    ellipse(x + 10, y - 5, 15, 15);
+    
+    // Глаза
+    fill(255);
+    ellipse(x + 25, y, 5, 5);
+    fill(0);
+    ellipse(x + 25, y, 2, 2);
+    
+    // Хвост
+    stroke(150, 75, 0);
+    strokeWeight(5);
+    noFill();
+    line(x - 20, y, x - 40, y);
+    noStroke();
+}
+function drawSign() {
+    // размеры и координаты таблички
+    let signWidth = 130;
+    let signHeight = 70;
+    let x = 180 - signWidth / 2; 
+    let y = 370 - signHeight / 2; 
+
+    //фон таблички
+    noStroke();
+    fill(139, 69, 19); 
+    rect(x, y, signWidth, signHeight, 10); 
+    for (let i = 0; i < 5; i++) {
+        fill(160, 82, 45); 
+        rect(x + i * (signWidth / 5), y, signWidth / 5, signHeight / 5);
+    }
+
+    // рамка
+    stroke(0);
+    strokeWeight(5);
+    noFill();
+    rect(x, y, signWidth, signHeight, 10); 
+
+    fill(255); // Цвет текста
+    textSize(14);
+    textAlign(CENTER, CENTER);//выравнивание
+
+    // текст на несколько строк
+    text("Click on the\nleft mouse button\nfor the mouse", 180, 370);
+
+    //ножка таблички
+    let legHeight = 50; // Высота ножки
+    let legWidth = 20; // Ширина ножки
+    let legX = x + signWidth / 2 - legWidth / 2; 
+    let legY = y + signHeight; 
+    fill(139, 69, 19); 
+    rect(legX, legY, legWidth, legHeight); 
+
+
+   noStroke();
+}
